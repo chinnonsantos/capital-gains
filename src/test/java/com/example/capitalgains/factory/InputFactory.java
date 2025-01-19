@@ -13,13 +13,13 @@ public class InputFactory {
     public static final Integer SCALE = 2;
     public static final AssetOperation ASSERT_OPERATION_1 = new AssetOperation(
             TypeOperation.BUY,
-            BigDecimal.valueOf(10.00).setScale(SCALE, ROUNDING_MODE_HALF_UP),
-            BigInteger.valueOf(10000)
+            BigDecimal.valueOf(10).setScale(SCALE, ROUNDING_MODE_HALF_UP),
+            BigInteger.valueOf(10_000)
     );
     public static final AssetOperation ASSERT_OPERATION_2 = new AssetOperation(
             TypeOperation.SELL,
-            BigDecimal.valueOf(20.00).setScale(SCALE, ROUNDING_MODE_HALF_UP),
-            BigInteger.valueOf(5000)
+            BigDecimal.valueOf(20).setScale(SCALE, ROUNDING_MODE_HALF_UP),
+            BigInteger.valueOf(5_000)
     );
 
     public static AssetOperation createBuyOperation(double unitCost, long quantity) {

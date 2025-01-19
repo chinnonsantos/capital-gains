@@ -7,7 +7,6 @@ import com.example.capitalgains.utils.MapperUtils;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
-import java.math.BigDecimal;
 import java.util.List;
 
 @Slf4j
@@ -19,15 +18,15 @@ public class FeeCalcImpl implements FeeCalcProcessor<List<Fee>, List<AssetOperat
     @Override
     public List<Fee> weightedAveragePriceCalculator(List<AssetOperation> assetOperationList) {
 
-        BigDecimal bd1 = mapperUtils.bigDecimalScaled("250");
-        BigDecimal bd2 = mapperUtils.bigDecimalScaled(15);
-
-        BigDecimal sum = mapperUtils.bigDecimalAdd(bd1, bd2);
-        BigDecimal difference = mapperUtils.bigDecimalSubtract(bd1, bd2);
-        BigDecimal quotient = mapperUtils.bigDecimalDivide(bd1, bd2);
-        BigDecimal product = mapperUtils.bigDecimalMultiply(bd1, bd2);
-
-        log.info("====> sum {}, difference {}, quotient {}, product {}", sum, difference, quotient, product);
+//        BigDecimal bd1 = mapperUtils.bigDecimalScaled("250");
+//        BigDecimal bd2 = mapperUtils.bigDecimalScaled(15);
+//
+//        BigDecimal sum = mapperUtils.bigDecimalAdd(bd1, bd2);
+//        BigDecimal difference = mapperUtils.bigDecimalSubtract(bd1, bd2);
+//        BigDecimal quotient = mapperUtils.bigDecimalDivide(bd1, bd2);
+//        BigDecimal product = mapperUtils.bigDecimalMultiply(bd1, bd2);
+//
+//        log.info("====> sum {}, difference {}, quotient {}, product {}", sum, difference, quotient, product);
 
         return assetOperationList.stream()
                 .map(assetOperation -> new Fee(assetOperation.getUnitCost())).toList();
