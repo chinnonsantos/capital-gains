@@ -1,0 +1,17 @@
+env: ${ENV:test}
+debug: ${DEBUG:true}
+trace: ${TRACE:false}
+
+app:
+  # HALF_UP – rounds towards "nearest neighbor" unless both neighbors are equidistant, in which case rounds up.
+  # It is also known as the banker’s rounding!
+  rounding-mode: HALF_UP
+  # scale of the BigDecimal
+  scale: 2
+
+spring:
+  application:
+    name: ${APP_NAME:capital-gains}
+  main:
+    banner-mode: off
+    web-application-type: NONE

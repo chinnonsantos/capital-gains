@@ -1,0 +1,14 @@
+env: ${ENV:local}
+debug: ${DEBUG:false}
+trace: ${TRACE:false}
+
+app:
+  rounding-mode: HALF_UP
+  scale: 2
+
+spring:
+  application:
+    name: ${APP_NAME:capital-gains}
+  main:
+    banner-mode: off
+    web-application-type: NONE
