@@ -53,23 +53,49 @@ By .jar with file input
  java -jar target/capital-gains-1.0.0.jar < ./examples/input.txt
 ```
 
-By Docker (with docker compose) with manual input
-
-```shell
- 
-```
-
 By Docker (with docker compose) file input
 
 ```shell
+# Load container via docker-compose and see output, or
+ docker compose up
  
+# Load container via docker-compose in backgroud mode...
+ docker compose up -d
+ 
+# and compare the output result saved in the file ./examples/output-result.txt (docker volume)
+ diff -u ./examples/output.txt ./examples/output-result.txt
 ```
+
+> Tips: use `docker compose down` to remove container and network.
 
 Input data example
 
 ```text
-[{"operation":"buy", "unit-cost":10.00, "quantity": 10000},{"operation":"sell", "unit-cost":20.00, "quantity": 5000}]
-[{"operation":"buy", "unit-cost":20.00, "quantity": 10000},{"operation":"sell", "unit-cost":10.00, "quantity": 5000}]
+[{"operation":"buy","unit-cost":10.00,"quantity":10000},{"operation":"sell","unit-cost":20.00,"quantity": 5000}]
+[{"operation":"buy","unit-cost":20.00,"quantity":10000},{"operation":"sell","unit-cost":10.00,"quantity": 5000}]
+
+```
+
+Expected example output
+
+```text
+[{"tax":0.00},{"tax":10000.00}]
+[{"tax":0.00},{"tax":0.00}]
+
 ```
 
 > Tips: File with all data examples: [`./examples/input.txt`](./examples/input.txt)
+
+## Check the result with sample file
+
+Run application with input from sample file
+
+```shell
+java -jar target/capital-gains-1.0.0.jar < ./examples/input.txt > ./examples/output-result.txt
+```
+
+Compare the output result saved in the file [`./examples/output-result.txt`](./examples/output-result.txt)
+
+```shell
+diff -u ./examples/output.txt ./examples/output-result.txt
+```

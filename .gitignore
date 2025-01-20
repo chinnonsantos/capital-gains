@@ -4,6 +4,7 @@ target/
 !**/src/main/**/target/
 !**/src/test/**/target/
 .DS_Store
+/examples/output-result.txt
 
 ### STS ###
 .apt_generated

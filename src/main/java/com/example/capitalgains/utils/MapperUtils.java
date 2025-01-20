@@ -77,11 +77,6 @@ public class MapperUtils {
                 .setScale(propertiesConfig.getApp().getScale(), propertiesConfig.getApp().getRoundingMode());
     }
 
-    public BigDecimal bigDecimalScaled(String value) {
-        return new BigDecimal(value)
-                .setScale(propertiesConfig.getApp().getScale(), propertiesConfig.getApp().getRoundingMode());
-    }
-
     public BigDecimal bigDecimalZero() {
         return BigDecimal.ZERO
                 .setScale(propertiesConfig.getApp().getScale(), propertiesConfig.getApp().getRoundingMode());

@@ -1,0 +1,41 @@
+services:
+
+  capital-gains-app:
+    image: amazoncorretto:21
+    container_name: capital-gains-app
+    volumes:
+      - ./target/capital-gains-1.0.0.jar:/capital-gains-1.0.0.jar
+      - ./examples:/examples
+      - ./logs:/logs
+#    command: ["java", "-jar", "./capital-gains-1.0.0.jar"]
+    command: [
+      "/bin/sh",
+      "-c",
+      "java -version && ls && java -jar capital-gains-1.0.0.jar < ./examples/input.txt > ./examples/output-result.txt"
+    ]
+    networks:
+      capital-gains-localhost-test:
+        ipv4_address: 172.16.239.61
+
+#  capital-gains-app:
+#    build:
+#      context: /
+#      args:
+#        APP_VERSION: 1.0.0
+#    image: "capital-gains-app:1.0.0"
+#    container_name: capital-gains-app
+#    volumes:
+#      - ./examples/:/examples/
+#      - ./examples:/examples
+#      - ./logs:/logs
+#    networks:
+#      capital-gains-localhost-test:
+#        ipv4_address: 172.16.239.62
+
+networks:
+  capital-gains-localhost-test:
+    name: capital-gains-localhost-test
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 172.16.239.0/24
