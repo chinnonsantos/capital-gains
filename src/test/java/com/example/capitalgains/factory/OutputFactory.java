@@ -9,8 +9,8 @@ import static com.example.capitalgains.factory.InputFactory.SCALE;
 
 public class OutputFactory {
 
-    public static final Fee FEE_1 = new Fee(BigDecimal.valueOf(0).setScale(SCALE, ROUNDING_MODE_HALF_UP));
-    public static final Fee FEE_2 = new Fee(BigDecimal.valueOf(10_000).setScale(SCALE, ROUNDING_MODE_HALF_UP));
+    public static final Fee FEE_1 = new Fee(BigDecimal.valueOf(0.00).setScale(SCALE, ROUNDING_MODE_HALF_UP));
+    public static final Fee FEE_2 = new Fee(BigDecimal.valueOf(10_000.00).setScale(SCALE, ROUNDING_MODE_HALF_UP));
     public static final Fee FEE_ZERO = FEE_1;
     public static final Fee FEE_TEN_THOUSAND = FEE_2;
 

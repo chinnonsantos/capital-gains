@@ -12,7 +12,7 @@
         </encoder>
     </appender>
 
-    <root level="${LOG_LEVEL_ROOT:-DEBUG}">
+    <root level="${LOG_LEVEL_ROOT:-INFO}">
         <appender-ref ref="FILE" />
     </root>
 </configuration>

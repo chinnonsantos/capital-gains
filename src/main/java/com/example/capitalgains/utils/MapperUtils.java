@@ -20,9 +20,21 @@ public class MapperUtils {
     private final ObjectMapper objectMapper;
     private final PropertiesConfig propertiesConfig;
 
+    public BigDecimal bigDecimalAdd(BigDecimal addend, BigInteger augend) {
+        return addend
+                .add(new BigDecimal(augend))
+                .setScale(propertiesConfig.getApp().getScale(), propertiesConfig.getApp().getRoundingMode());
+    }
+
     public BigDecimal bigDecimalAdd(BigDecimal addend, BigDecimal augend) {
         return addend
                 .add(augend)
+                .setScale(propertiesConfig.getApp().getScale(), propertiesConfig.getApp().getRoundingMode());
+    }
+
+    public BigDecimal bigDecimalSubtract(BigDecimal minuend, BigInteger subtrahend) {
+        return minuend
+                .subtract(new BigDecimal(subtrahend))
                 .setScale(propertiesConfig.getApp().getScale(), propertiesConfig.getApp().getRoundingMode());
     }
 
@@ -35,6 +47,12 @@ public class MapperUtils {
     public BigDecimal bigDecimalDivide(BigDecimal dividend, BigDecimal divisor) {
         return dividend
                 .divide(divisor, propertiesConfig.getApp().getRoundingMode())
+                .setScale(propertiesConfig.getApp().getScale(), propertiesConfig.getApp().getRoundingMode());
+    }
+
+    public BigDecimal bigDecimalMultiply(BigDecimal multiplicand, BigInteger multiplier) {
+        return multiplicand
+                .multiply(new BigDecimal(multiplier))
                 .setScale(propertiesConfig.getApp().getScale(), propertiesConfig.getApp().getRoundingMode());
     }
 
@@ -61,6 +79,11 @@ public class MapperUtils {
 
     public BigDecimal bigDecimalScaled(String value) {
         return new BigDecimal(value)
+                .setScale(propertiesConfig.getApp().getScale(), propertiesConfig.getApp().getRoundingMode());
+    }
+
+    public BigDecimal bigDecimalZero() {
+        return BigDecimal.ZERO
                 .setScale(propertiesConfig.getApp().getScale(), propertiesConfig.getApp().getRoundingMode());
     }
 

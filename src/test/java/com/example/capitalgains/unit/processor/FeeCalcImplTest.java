@@ -20,6 +20,8 @@ import static com.example.capitalgains.factory.InputFactory.ROUNDING_MODE_HALF_U
 import static com.example.capitalgains.factory.InputFactory.SCALE;
 import static com.example.capitalgains.factory.InputFactory.createBuyOperation;
 import static com.example.capitalgains.factory.InputFactory.createSellOperation;
+import static com.example.capitalgains.factory.OutputFactory.FEE_1;
+import static com.example.capitalgains.factory.OutputFactory.FEE_2;
 import static com.example.capitalgains.factory.OutputFactory.FEE_TEN_THOUSAND;
 import static com.example.capitalgains.factory.OutputFactory.FEE_ZERO;
 import static com.example.capitalgains.factory.OutputFactory.createFee;
@@ -57,8 +59,7 @@ class FeeCalcImplTest {
     void weightedAveragePriceCalculatorTestSuccess0() {
         List<AssetOperation> assetOperationList = List.of(ASSERT_OPERATION_1, ASSERT_OPERATION_2);
 
-        List<Fee> feeList = assetOperationList.stream()
-                .map(assetOperation -> new Fee(assetOperation.getUnitCost())).toList();
+        List<Fee> feeList = List.of(FEE_1, FEE_2);
 
         assertDoesNotThrow(() -> {
             List<Fee> response = feeCalc.weightedAveragePriceCalculator(assetOperationList);
@@ -148,7 +149,7 @@ class FeeCalcImplTest {
         AssetOperation operation3 = createSellOperation(20, 3_000);
         List<AssetOperation> assetOperationList = List.of(operation1, operation2, operation3);
 
-        List<Fee> feeList = List.of(FEE_ZERO, FEE_ZERO, FEE_TEN_THOUSAND);
+        List<Fee> feeList = List.of(FEE_ZERO, FEE_ZERO, createFee(1_000));
 
         List<Fee> response = feeCalc.weightedAveragePriceCalculator(assetOperationList);
 

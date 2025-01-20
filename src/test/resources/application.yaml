@@ -1,5 +1,5 @@
 env: ${ENV:test}
-debug: ${DEBUG:true}
+debug: ${DEBUG:false}
 trace: ${TRACE:false}
 
 app:
