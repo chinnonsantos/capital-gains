@@ -8,6 +8,11 @@ app:
   rounding-mode: ${ROUNDING_MODE:HALF_UP}
   # scale of the BigDecimal
   scale: ${DECIMAL_SCALE:2}
+  # You do not pay any tax if the total value of the transaction
+  # (unit cost of the asset x quantity) is less than or equal to R$ 20.000,00.
+  operation-ceiling: ${OPERATION_CEILING:20000.00}
+  # The tax percentage paid is 20% on the profit obtained from the operation.
+  tax-percentage: ${TAX_PERCENTAGE:0.20}
 
 spring:
   application:

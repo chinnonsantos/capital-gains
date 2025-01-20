@@ -3,11 +3,10 @@ debug: ${DEBUG:false}
 trace: ${TRACE:false}
 
 app:
-  # HALF_UP – rounds towards "nearest neighbor" unless both neighbors are equidistant, in which case rounds up.
-  # It is also known as the banker’s rounding!
   rounding-mode: HALF_UP
-  # scale of the BigDecimal
   scale: 2
+  operation-ceiling: 20000.00
+  tax-percentage: 0.20
 
 spring:
   application:

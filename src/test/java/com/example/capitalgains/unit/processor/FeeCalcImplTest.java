@@ -16,8 +16,10 @@ import java.util.List;
 
 import static com.example.capitalgains.factory.InputFactory.ASSERT_OPERATION_1;
 import static com.example.capitalgains.factory.InputFactory.ASSERT_OPERATION_2;
+import static com.example.capitalgains.factory.InputFactory.OPERATION_CEILING_20_K;
 import static com.example.capitalgains.factory.InputFactory.ROUNDING_MODE_HALF_UP;
-import static com.example.capitalgains.factory.InputFactory.SCALE;
+import static com.example.capitalgains.factory.InputFactory.SCALE_2;
+import static com.example.capitalgains.factory.InputFactory.TAX_PERCENTAGE_020;
 import static com.example.capitalgains.factory.InputFactory.createBuyOperation;
 import static com.example.capitalgains.factory.InputFactory.createSellOperation;
 import static com.example.capitalgains.factory.OutputFactory.FEE_1;
@@ -36,18 +38,34 @@ import static org.mockito.Mockito.mock;
 class FeeCalcImplTest {
 
     private FeeCalcProcessor<List<Fee>, List<AssetOperation>> feeCalc;
+    private PropertiesConfig propertiesConfig;
 
     @BeforeEach
     void setUp() {
         PropertiesConfig.App appProps = new PropertiesConfig.App();
         appProps.setRoundingMode(ROUNDING_MODE_HALF_UP);
-        appProps.setScale(SCALE);
+        appProps.setScale(SCALE_2);
+        appProps.setOperationCeiling(OPERATION_CEILING_20_K);
+        appProps.setTaxPercentage(TAX_PERCENTAGE_020);
 
-        PropertiesConfig propertiesConfig = new PropertiesConfig();
+        propertiesConfig = new PropertiesConfig();
         propertiesConfig.setApp(appProps);
 
         MapperUtils mapperUtils = new MapperUtils(mock(), propertiesConfig);
-        feeCalc = new FeeCalcImpl(mapperUtils);
+        feeCalc = new FeeCalcImpl(mapperUtils, propertiesConfig);
+    }
+
+    @Test
+    @Tag("propertiesConfig")
+    @Tag("success")
+    @DisplayName("Given a PropertiesConfig, " +
+            "When data has default values, " +
+            "Should return the corresponding values")
+    void checkDefaultPropsValuesTestSuccess0() {
+        assertEquals(ROUNDING_MODE_HALF_UP, propertiesConfig.getApp().getRoundingMode());
+        assertEquals(SCALE_2, propertiesConfig.getApp().getScale());
+        assertEquals(OPERATION_CEILING_20_K, propertiesConfig.getApp().getOperationCeiling());
+        assertEquals(TAX_PERCENTAGE_020, propertiesConfig.getApp().getTaxPercentage());
     }
 
     @Test

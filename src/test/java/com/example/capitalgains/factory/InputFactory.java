@@ -10,22 +10,27 @@ import java.math.RoundingMode;
 public class InputFactory {
 
     public static final RoundingMode ROUNDING_MODE_HALF_UP = RoundingMode.HALF_UP;
-    public static final Integer SCALE = 2;
+    public static final Integer SCALE_2 = 2;
+    public static final BigDecimal OPERATION_CEILING_20_K = BigDecimal.valueOf(20_000.00)
+            .setScale(SCALE_2, ROUNDING_MODE_HALF_UP);
+    public static final BigDecimal TAX_PERCENTAGE_020 = BigDecimal.valueOf(0.20)
+            .setScale(SCALE_2, ROUNDING_MODE_HALF_UP);
+
     public static final AssetOperation ASSERT_OPERATION_1 = new AssetOperation(
             TypeOperation.BUY,
-            BigDecimal.valueOf(10.00).setScale(SCALE, ROUNDING_MODE_HALF_UP),
+            BigDecimal.valueOf(10.00).setScale(SCALE_2, ROUNDING_MODE_HALF_UP),
             BigInteger.valueOf(10_000)
     );
     public static final AssetOperation ASSERT_OPERATION_2 = new AssetOperation(
             TypeOperation.SELL,
-            BigDecimal.valueOf(20.00).setScale(SCALE, ROUNDING_MODE_HALF_UP),
+            BigDecimal.valueOf(20.00).setScale(SCALE_2, ROUNDING_MODE_HALF_UP),
             BigInteger.valueOf(5_000)
     );
 
     public static AssetOperation createBuyOperation(double unitCost, long quantity) {
         return new AssetOperation(
                 TypeOperation.BUY,
-                BigDecimal.valueOf(unitCost).setScale(SCALE, ROUNDING_MODE_HALF_UP),
+                BigDecimal.valueOf(unitCost).setScale(SCALE_2, ROUNDING_MODE_HALF_UP),
                 BigInteger.valueOf(quantity)
         );
     }
@@ -33,7 +38,7 @@ public class InputFactory {
     public static AssetOperation createSellOperation(double unitCost, long quantity) {
         return new AssetOperation(
                 TypeOperation.SELL,
-                BigDecimal.valueOf(unitCost).setScale(SCALE, ROUNDING_MODE_HALF_UP),
+                BigDecimal.valueOf(unitCost).setScale(SCALE_2, ROUNDING_MODE_HALF_UP),
                 BigInteger.valueOf(quantity)
         );
     }

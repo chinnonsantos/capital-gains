@@ -33,7 +33,7 @@ public class CapitalGainsApplication implements CommandLineRunner {
 		MapperUtils mapperUtils = new MapperUtils(objectMapper, propertiesConfig);
 
         this.inputStdin = new InputStdinAssetOperations(mapperUtils);
-		this.feeCalc = new FeeCalcImpl(mapperUtils);
+		this.feeCalc = new FeeCalcImpl(mapperUtils, propertiesConfig);
 		this.outputStdout = new OutputStdout(mapperUtils);
 	}
 

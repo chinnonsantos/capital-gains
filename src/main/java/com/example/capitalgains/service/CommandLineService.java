@@ -29,14 +29,11 @@ public class CommandLineService {
 
         try {
             while ((lineRead = bufferedReader.readLine()) != null) {
-                log.info("line read: {}", lineRead);
                 if (StringUtils.isEmpty(lineRead)) break;
 
                 List<AssetOperation> assetOperationList = inputStdin.inputReader(lineRead);
-                log.info("assetOperationList: {}", assetOperationList);
 
                 List<Fee> feeList = feeCalc.weightedAveragePriceCalculator(assetOperationList);
-                log.info("feeList: {}", feeList);
 
                 outputStdout.outputWriter(feeList);
             }
