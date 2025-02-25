@@ -99,3 +99,25 @@ Compare the output result saved in the file [`./examples/output-result.txt`](./e
 ```shell
 diff -u ./examples/output.txt ./examples/output-result.txt
 ```
+
+## Handling sell > buy scenario
+
+Input #1
+```json
+[{"operation":"buy", "unit-cost":10, "quantity": 10000}, {"operation":"sell", "unit-cost":20, "quantity": 11000}]
+```
+
+Output #1
+```json
+[{"tax":0}, {"error":"Can't sell more stocks than you have"}]
+```
+
+Input #2
+```json
+[{"operation":"buy", "unit-cost": 10, "quantity": 10000}, {"operation":"sell", "unit-cost":20, "quantity": 11000}, {"operation":"sell", "unit-cost": 20, "quantity": 5000}]
+```
+
+Output #2
+```json
+[{"tax":0}, {"error":"Can't sell more stocks than you have"}, {"tax":10000}]
+```

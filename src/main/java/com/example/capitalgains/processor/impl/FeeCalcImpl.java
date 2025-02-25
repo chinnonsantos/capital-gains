@@ -3,7 +3,7 @@ package com.example.capitalgains.processor.impl;
 import com.example.capitalgains.config.PropertiesConfig;
 import com.example.capitalgains.domain.Accumulator;
 import com.example.capitalgains.domain.AssetOperation;
-import com.example.capitalgains.domain.Fee;
+import com.example.capitalgains.domain.OperationResponse;
 import com.example.capitalgains.domain.TypeOperation;
 import com.example.capitalgains.processor.FeeCalcProcessor;
 import com.example.capitalgains.utils.MapperUtils;
@@ -16,7 +16,7 @@ import java.util.List;
 
 @Slf4j
 @AllArgsConstructor
-public class FeeCalcImpl implements FeeCalcProcessor<List<Fee>, List<AssetOperation>> {
+public class FeeCalcImpl implements FeeCalcProcessor<List<OperationResponse>, List<AssetOperation>> {
 
     private final MapperUtils mapperUtils;
     private final PropertiesConfig propertiesConfig;
@@ -39,14 +39,14 @@ public class FeeCalcImpl implements FeeCalcProcessor<List<Fee>, List<AssetOperat
     }
 
     @Override
-    public List<Fee> weightedAveragePriceCalculator(List<AssetOperation> assetOperationList) {
+    public List<OperationResponse> weightedAveragePriceCalculator(List<AssetOperation> assetOperationList) {
         log.info("line handles {} operations", assetOperationList.size());
 
         BigDecimal operationCeiling = propertiesConfig.getApp().getOperationCeiling();
         BigDecimal taxPercentage = propertiesConfig.getApp().getTaxPercentage();
         BigDecimal bigDecimalZero = mapperUtils.bigDecimalZero();
 
-        ArrayList<Fee> feeArrayList = new ArrayList<>();
+        ArrayList<OperationResponse> operationResponseArrayList = new ArrayList<>();
         Accumulator accumulator = new Accumulator(bigDecimalZero, bigDecimalZero, bigDecimalZero);
 
         for (AssetOperation assetOperation : assetOperationList) {
@@ -60,7 +60,13 @@ public class FeeCalcImpl implements FeeCalcProcessor<List<Fee>, List<AssetOperat
                 accumulator = new Accumulator(
                         accumulator.getAccumulateLoss(), newCurrentQty, newCurrentWeightedAverage
                 );
-                feeArrayList.add(new Fee(totalTaxes));
+                operationResponseArrayList.add(new OperationResponse(totalTaxes, null));
+                continue;
+            }
+
+            if (assetOperation.getQuantity().compareTo(accumulator.getCurrentQty().toBigInteger()) > 0) {
+                operationResponseArrayList
+                        .add(new OperationResponse(null, "Can't sell more stocks than you have"));
                 continue;
             }
 
@@ -100,7 +106,7 @@ public class FeeCalcImpl implements FeeCalcProcessor<List<Fee>, List<AssetOperat
                 accumulator = new Accumulator(
                         newAccumulateLoss, newCurrentQty, accumulator.getCurrentWeightedAverage()
                 );
-                feeArrayList.add(new Fee(totalTaxes));
+                operationResponseArrayList.add(new OperationResponse(totalTaxes, null));
                 continue;
             }
 
@@ -115,9 +121,9 @@ public class FeeCalcImpl implements FeeCalcProcessor<List<Fee>, List<AssetOperat
             accumulator = new Accumulator(
                     newAccumulateLoss, newCurrentQty, accumulator.getCurrentWeightedAverage()
             );
-            feeArrayList.add(new Fee(totalTaxes));
+            operationResponseArrayList.add(new OperationResponse(totalTaxes, null));
         }
 
-        return feeArrayList.stream().toList();
+        return operationResponseArrayList.stream().toList();
     }
 }

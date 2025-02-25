@@ -2,7 +2,7 @@ package com.example.capitalgains.unit.utils;
 
 import com.example.capitalgains.config.PropertiesConfig;
 import com.example.capitalgains.domain.AssetOperation;
-import com.example.capitalgains.domain.Fee;
+import com.example.capitalgains.domain.OperationResponse;
 import com.example.capitalgains.utils.MapperUtils;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.DisplayName;
@@ -14,8 +14,8 @@ import java.util.List;
 
 import static com.example.capitalgains.factory.InputFactory.ASSERT_OPERATION_1;
 import static com.example.capitalgains.factory.InputFactory.ASSERT_OPERATION_2;
-import static com.example.capitalgains.factory.OutputFactory.FEE_1;
-import static com.example.capitalgains.factory.OutputFactory.FEE_2;
+import static com.example.capitalgains.factory.OutputFactory.OPERATION_RESPONSE_1;
+import static com.example.capitalgains.factory.OutputFactory.OPERATION_RESPONSE_2;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.mock;
@@ -38,10 +38,10 @@ class MapperUtilsTest {
     void fromListFeeToStringTestSuccess1() {
         String feeStringify = "[{\"tax\":0.00},{\"tax\":10000.00}]";
 
-        List<Fee> feeList = List.of(FEE_1, FEE_2);
+        List<OperationResponse> operationResponseList = List.of(OPERATION_RESPONSE_1, OPERATION_RESPONSE_2);
 
         assertDoesNotThrow(() -> {
-            String response = mapperUtils.fromListFeeToString(feeList);
+            String response = mapperUtils.fromListFeeToString(operationResponseList);
 
             assertEquals(feeStringify, response);
         });

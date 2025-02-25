@@ -2,7 +2,7 @@ package com.example.capitalgains.unit.service;
 
 import com.example.capitalgains.config.PropertiesConfig;
 import com.example.capitalgains.domain.AssetOperation;
-import com.example.capitalgains.domain.Fee;
+import com.example.capitalgains.domain.OperationResponse;
 import com.example.capitalgains.processor.FeeCalcProcessor;
 import com.example.capitalgains.processor.InputProcessor;
 import com.example.capitalgains.processor.OutputProcessor;
@@ -39,8 +39,8 @@ class CommandLineServiceTest {
     private final ObjectMapper objectMapper = new ObjectMapper();
     private final MapperUtils mapperUtils = new MapperUtils(objectMapper, propertiesConfig);
     private final InputProcessor<List<AssetOperation>, String> inputStdin = mock();
-    private final FeeCalcProcessor<List<Fee>, List<AssetOperation>> feeCalc = mock();
-    private final OutputProcessor<List<Fee>> outputStdout = mock();
+    private final FeeCalcProcessor<List<OperationResponse>, List<AssetOperation>> feeCalc = mock();
+    private final OutputProcessor<List<OperationResponse>> outputStdout = mock();
 
     @Test
     @Tag("runner")
@@ -58,15 +58,15 @@ class CommandLineServiceTest {
 
         List<AssetOperation> assetOperationList1 = mapperUtils.fromStringToListAssetOperation(inputLine1);
         List<AssetOperation> assetOperationList2 = mapperUtils.fromStringToListAssetOperation(inputLine2);
-        List<Fee> feeList1 = assetOperationList1.stream()
-                .map(assetOperation -> new Fee(assetOperation.getUnitCost())).toList();
-        List<Fee> feeList2 = assetOperationList2.stream()
-                .map(assetOperation -> new Fee(assetOperation.getUnitCost())).toList();
+        List<OperationResponse> operationResponseList1 = assetOperationList1.stream()
+                .map(assetOperation -> new OperationResponse(assetOperation.getUnitCost())).toList();
+        List<OperationResponse> operationResponseList2 = assetOperationList2.stream()
+                .map(assetOperation -> new OperationResponse(assetOperation.getUnitCost())).toList();
 
         when(inputStdin.inputReader(inputLine1)).thenReturn(assetOperationList1);
         when(inputStdin.inputReader(inputLine2)).thenReturn(assetOperationList2);
-        when(feeCalc.weightedAveragePriceCalculator(assetOperationList1)).thenReturn(feeList1);
-        when(feeCalc.weightedAveragePriceCalculator(assetOperationList2)).thenReturn(feeList2);
+        when(feeCalc.weightedAveragePriceCalculator(assetOperationList1)).thenReturn(operationResponseList1);
+        when(feeCalc.weightedAveragePriceCalculator(assetOperationList2)).thenReturn(operationResponseList2);
 
         CommandLineService commandLineService =
                 new CommandLineService(bufferedReaderInput1, inputStdin, feeCalc, outputStdout);
@@ -77,10 +77,10 @@ class CommandLineServiceTest {
 
         inOrder.verify(inputStdin, times(1)).inputReader(inputLine1);
         inOrder.verify(feeCalc, times(1)).weightedAveragePriceCalculator(assetOperationList1);
-        inOrder.verify(outputStdout, times(1)).outputWriter(feeList1);
+        inOrder.verify(outputStdout, times(1)).outputWriter(operationResponseList1);
         inOrder.verify(inputStdin, times(1)).inputReader(inputLine2);
         inOrder.verify(feeCalc, times(1)).weightedAveragePriceCalculator(assetOperationList2);
-        inOrder.verify(outputStdout, times(1)).outputWriter(feeList2);
+        inOrder.verify(outputStdout, times(1)).outputWriter(operationResponseList2);
 
         verify(inputStdin, times(2)).inputReader(any());
         verify(feeCalc, times(2)).weightedAveragePriceCalculator(anyList());

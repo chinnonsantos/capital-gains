@@ -1,7 +1,7 @@
 package com.example.capitalgains.service;
 
 import com.example.capitalgains.domain.AssetOperation;
-import com.example.capitalgains.domain.Fee;
+import com.example.capitalgains.domain.OperationResponse;
 import com.example.capitalgains.processor.FeeCalcProcessor;
 import com.example.capitalgains.processor.InputProcessor;
 import com.example.capitalgains.processor.OutputProcessor;
@@ -19,8 +19,8 @@ public class CommandLineService {
 
     private final BufferedReader bufferedReader;
     private final InputProcessor<List<AssetOperation>, String> inputStdin;
-    private final FeeCalcProcessor<List<Fee>, List<AssetOperation>> feeCalc;
-    private final OutputProcessor<List<Fee>> outputStdout;
+    private final FeeCalcProcessor<List<OperationResponse>, List<AssetOperation>> feeCalc;
+    private final OutputProcessor<List<OperationResponse>> outputStdout;
 
     public void runner() {
         log.debug("start command line runner");
@@ -33,9 +33,9 @@ public class CommandLineService {
 
                 List<AssetOperation> assetOperationList = inputStdin.inputReader(lineRead);
 
-                List<Fee> feeList = feeCalc.weightedAveragePriceCalculator(assetOperationList);
+                List<OperationResponse> operationResponseList = feeCalc.weightedAveragePriceCalculator(assetOperationList);
 
-                outputStdout.outputWriter(feeList);
+                outputStdout.outputWriter(operationResponseList);
             }
         } catch (IOException e) {
             log.error("read line error | {}", e.getMessage(), e.getCause());
