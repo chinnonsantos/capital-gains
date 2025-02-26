@@ -2,7 +2,7 @@ package com.example.capitalgains.unit.processor;
 
 import com.example.capitalgains.config.PropertiesConfig;
 import com.example.capitalgains.domain.AssetOperation;
-import com.example.capitalgains.domain.Fee;
+import com.example.capitalgains.domain.OperationResponse;
 import com.example.capitalgains.processor.FeeCalcProcessor;
 import com.example.capitalgains.processor.impl.FeeCalcImpl;
 import com.example.capitalgains.utils.MapperUtils;
@@ -22,10 +22,10 @@ import static com.example.capitalgains.factory.InputFactory.SCALE_2;
 import static com.example.capitalgains.factory.InputFactory.TAX_PERCENTAGE_020;
 import static com.example.capitalgains.factory.InputFactory.createBuyOperation;
 import static com.example.capitalgains.factory.InputFactory.createSellOperation;
-import static com.example.capitalgains.factory.OutputFactory.FEE_1;
-import static com.example.capitalgains.factory.OutputFactory.FEE_2;
-import static com.example.capitalgains.factory.OutputFactory.FEE_TEN_THOUSAND;
-import static com.example.capitalgains.factory.OutputFactory.FEE_ZERO;
+import static com.example.capitalgains.factory.OutputFactory.OPERATION_RESPONSE_1;
+import static com.example.capitalgains.factory.OutputFactory.OPERATION_RESPONSE_2;
+import static com.example.capitalgains.factory.OutputFactory.OPERATION_RESPONSE_TEN_THOUSAND;
+import static com.example.capitalgains.factory.OutputFactory.OPERATION_RESPONSE_ZERO;
 import static com.example.capitalgains.factory.OutputFactory.createFee;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -35,9 +35,9 @@ import static org.mockito.Mockito.mock;
 @Timeout(15)
 @Tag("unit")
 @Tag("FeeCalcImpl")
-class FeeCalcImplTest {
+class OperationResponseCalcImplTest {
 
-    private FeeCalcProcessor<List<Fee>, List<AssetOperation>> feeCalc;
+    private FeeCalcProcessor<List<OperationResponse>, List<AssetOperation>> feeCalc;
     private PropertiesConfig propertiesConfig;
 
     @BeforeEach
@@ -77,12 +77,12 @@ class FeeCalcImplTest {
     void weightedAveragePriceCalculatorTestSuccess0() {
         List<AssetOperation> assetOperationList = List.of(ASSERT_OPERATION_1, ASSERT_OPERATION_2);
 
-        List<Fee> feeList = List.of(FEE_1, FEE_2);
+        List<OperationResponse> operationResponseList = List.of(OPERATION_RESPONSE_1, OPERATION_RESPONSE_2);
 
         assertDoesNotThrow(() -> {
-            List<Fee> response = feeCalc.weightedAveragePriceCalculator(assetOperationList);
+            List<OperationResponse> response = feeCalc.weightedAveragePriceCalculator(assetOperationList);
 
-            assertEquals(feeList, response);
+            assertEquals(operationResponseList, response);
         });
     }
 
@@ -97,11 +97,11 @@ class FeeCalcImplTest {
         AssetOperation operation2 = createSellOperation(15, 50);
         List<AssetOperation> assetOperationList = List.of(operation1, operation2, operation2);
 
-        List<Fee> feeList = List.of(FEE_ZERO, FEE_ZERO, FEE_ZERO);
+        List<OperationResponse> operationResponseList = List.of(OPERATION_RESPONSE_ZERO, OPERATION_RESPONSE_ZERO, OPERATION_RESPONSE_ZERO);
 
-        List<Fee> response = feeCalc.weightedAveragePriceCalculator(assetOperationList);
+        List<OperationResponse> response = feeCalc.weightedAveragePriceCalculator(assetOperationList);
 
-        assertEquals(feeList, response);
+        assertEquals(operationResponseList, response);
     }
 
     @Test
@@ -116,11 +116,11 @@ class FeeCalcImplTest {
         AssetOperation operation3 = createSellOperation(5, 5_000);
         List<AssetOperation> assetOperationList = List.of(operation1, operation2, operation3);
 
-        List<Fee> feeList = List.of(FEE_ZERO, FEE_TEN_THOUSAND, FEE_ZERO);
+        List<OperationResponse> operationResponseList = List.of(OPERATION_RESPONSE_ZERO, OPERATION_RESPONSE_TEN_THOUSAND, OPERATION_RESPONSE_ZERO);
 
-        List<Fee> response = feeCalc.weightedAveragePriceCalculator(assetOperationList);
+        List<OperationResponse> response = feeCalc.weightedAveragePriceCalculator(assetOperationList);
 
-        assertEquals(feeList, response);
+        assertEquals(operationResponseList, response);
     }
 
     @Test
@@ -134,22 +134,22 @@ class FeeCalcImplTest {
         AssetOperation operation2a = createSellOperation(15, 50);
         List<AssetOperation> assetOperationListA = List.of(operation1a, operation2a, operation2a);
 
-        List<Fee> feeListA = List.of(FEE_ZERO, FEE_ZERO, FEE_ZERO);
+        List<OperationResponse> operationResponseListA = List.of(OPERATION_RESPONSE_ZERO, OPERATION_RESPONSE_ZERO, OPERATION_RESPONSE_ZERO);
 
-        List<Fee> responseA = feeCalc.weightedAveragePriceCalculator(assetOperationListA);
+        List<OperationResponse> responseA = feeCalc.weightedAveragePriceCalculator(assetOperationListA);
 
-        assertEquals(feeListA, responseA);
+        assertEquals(operationResponseListA, responseA);
 
         AssetOperation operation1b = createBuyOperation(10, 10_000);
         AssetOperation operation2b = createSellOperation(20, 5_000);
         AssetOperation operation3b = createSellOperation(5, 5_000);
         List<AssetOperation> assetOperationListB = List.of(operation1b, operation2b, operation3b);
 
-        List<Fee> feeListB = List.of(FEE_ZERO, FEE_TEN_THOUSAND, FEE_ZERO);
+        List<OperationResponse> operationResponseListB = List.of(OPERATION_RESPONSE_ZERO, OPERATION_RESPONSE_TEN_THOUSAND, OPERATION_RESPONSE_ZERO);
 
-        List<Fee> responseB = feeCalc.weightedAveragePriceCalculator(assetOperationListB);
+        List<OperationResponse> responseB = feeCalc.weightedAveragePriceCalculator(assetOperationListB);
 
-        assertEquals(feeListB, responseB);
+        assertEquals(operationResponseListB, responseB);
 
         assertNotEquals(assetOperationListA, assetOperationListB);
         assertNotEquals(responseA, responseB);
@@ -167,11 +167,11 @@ class FeeCalcImplTest {
         AssetOperation operation3 = createSellOperation(20, 3_000);
         List<AssetOperation> assetOperationList = List.of(operation1, operation2, operation3);
 
-        List<Fee> feeList = List.of(FEE_ZERO, FEE_ZERO, createFee(1_000));
+        List<OperationResponse> operationResponseList = List.of(OPERATION_RESPONSE_ZERO, OPERATION_RESPONSE_ZERO, createFee(1_000));
 
-        List<Fee> response = feeCalc.weightedAveragePriceCalculator(assetOperationList);
+        List<OperationResponse> response = feeCalc.weightedAveragePriceCalculator(assetOperationList);
 
-        assertEquals(feeList, response);
+        assertEquals(operationResponseList, response);
     }
 
     @Test
@@ -186,11 +186,11 @@ class FeeCalcImplTest {
         AssetOperation operation3 = createSellOperation(15, 10_000);
         List<AssetOperation> assetOperationList = List.of(operation1, operation2, operation3);
 
-        List<Fee> feeList = List.of(FEE_ZERO, FEE_ZERO, FEE_ZERO);
+        List<OperationResponse> operationResponseList = List.of(OPERATION_RESPONSE_ZERO, OPERATION_RESPONSE_ZERO, OPERATION_RESPONSE_ZERO);
 
-        List<Fee> response = feeCalc.weightedAveragePriceCalculator(assetOperationList);
+        List<OperationResponse> response = feeCalc.weightedAveragePriceCalculator(assetOperationList);
 
-        assertEquals(feeList, response);
+        assertEquals(operationResponseList, response);
     }
 
     @Test
@@ -206,11 +206,11 @@ class FeeCalcImplTest {
         AssetOperation operation4 = createSellOperation(25, 5_000);
         List<AssetOperation> assetOperationList = List.of(operation1, operation2, operation3, operation4);
 
-        List<Fee> feeList = List.of(FEE_ZERO, FEE_ZERO, FEE_ZERO, FEE_TEN_THOUSAND);
+        List<OperationResponse> operationResponseList = List.of(OPERATION_RESPONSE_ZERO, OPERATION_RESPONSE_ZERO, OPERATION_RESPONSE_ZERO, OPERATION_RESPONSE_TEN_THOUSAND);
 
-        List<Fee> response = feeCalc.weightedAveragePriceCalculator(assetOperationList);
+        List<OperationResponse> response = feeCalc.weightedAveragePriceCalculator(assetOperationList);
 
-        assertEquals(feeList, response);
+        assertEquals(operationResponseList, response);
     }
 
     @Test
@@ -226,11 +226,11 @@ class FeeCalcImplTest {
         AssetOperation operation5 = createSellOperation(25, 1_000);
         List<AssetOperation> assetOperationList = List.of(operation1, operation2, operation3, operation3, operation5);
 
-        List<Fee> feeList = List.of(FEE_ZERO, FEE_ZERO, FEE_ZERO, FEE_ZERO, createFee(3_000));
+        List<OperationResponse> operationResponseList = List.of(OPERATION_RESPONSE_ZERO, OPERATION_RESPONSE_ZERO, OPERATION_RESPONSE_ZERO, OPERATION_RESPONSE_ZERO, createFee(3_000));
 
-        List<Fee> response = feeCalc.weightedAveragePriceCalculator(assetOperationList);
+        List<OperationResponse> response = feeCalc.weightedAveragePriceCalculator(assetOperationList);
 
-        assertEquals(feeList, response);
+        assertEquals(operationResponseList, response);
     }
 
     @Test
@@ -253,14 +253,14 @@ class FeeCalcImplTest {
                 operation6, operation7, operation8, operation9
         );
 
-        List<Fee> feeList = List.of(
-                FEE_ZERO, FEE_ZERO, FEE_ZERO, FEE_ZERO, createFee(3_000),
-                FEE_ZERO, FEE_ZERO, createFee(3_700), FEE_ZERO
+        List<OperationResponse> operationResponseList = List.of(
+                OPERATION_RESPONSE_ZERO, OPERATION_RESPONSE_ZERO, OPERATION_RESPONSE_ZERO, OPERATION_RESPONSE_ZERO, createFee(3_000),
+                OPERATION_RESPONSE_ZERO, OPERATION_RESPONSE_ZERO, createFee(3_700), OPERATION_RESPONSE_ZERO
         );
 
-        List<Fee> response = feeCalc.weightedAveragePriceCalculator(assetOperationList);
+        List<OperationResponse> response = feeCalc.weightedAveragePriceCalculator(assetOperationList);
 
-        assertEquals(feeList, response);
+        assertEquals(operationResponseList, response);
     }
 
     @Test
@@ -276,11 +276,11 @@ class FeeCalcImplTest {
         AssetOperation operation4 = createSellOperation(50, 10_000);
         List<AssetOperation> assetOperationList = List.of(operation1, operation2, operation3, operation4);
 
-        List<Fee> feeList = List.of(FEE_ZERO, createFee(80_000), FEE_ZERO, createFee(60_000));
+        List<OperationResponse> operationResponseList = List.of(OPERATION_RESPONSE_ZERO, createFee(80_000), OPERATION_RESPONSE_ZERO, createFee(60_000));
 
-        List<Fee> response = feeCalc.weightedAveragePriceCalculator(assetOperationList);
+        List<OperationResponse> response = feeCalc.weightedAveragePriceCalculator(assetOperationList);
 
-        assertEquals(feeList, response);
+        assertEquals(operationResponseList, response);
     }
 
     @Test
@@ -291,7 +291,7 @@ class FeeCalcImplTest {
             "Should return a empty list of Fee")
     void weightedAveragePriceCalculatorTestFail1() {
         assertDoesNotThrow(() -> {
-            List<Fee> response = feeCalc.weightedAveragePriceCalculator(List.of());
+            List<OperationResponse> response = feeCalc.weightedAveragePriceCalculator(List.of());
 
             assertEquals(List.of(), response);
         });

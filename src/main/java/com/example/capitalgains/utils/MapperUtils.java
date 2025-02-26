@@ -2,7 +2,8 @@ package com.example.capitalgains.utils;
 
 import com.example.capitalgains.config.PropertiesConfig;
 import com.example.capitalgains.domain.AssetOperation;
-import com.example.capitalgains.domain.Fee;
+import com.example.capitalgains.domain.OperationResponse;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -82,9 +83,11 @@ public class MapperUtils {
                 .setScale(propertiesConfig.getApp().getScale(), propertiesConfig.getApp().getRoundingMode());
     }
 
-    public String fromListFeeToString(List<Fee> feeList) {
+    public String fromListFeeToString(List<OperationResponse> operationResponseList) {
         try {
-            return objectMapper.writeValueAsString(feeList);
+            objectMapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);
+
+            return objectMapper.writeValueAsString(operationResponseList);
         } catch (JsonProcessingException e) {
             log.error("failed to serialize List<Fee> to JSON String (Stringify) | {}",
                     e.getMessage(), e.getCause());
@@ -94,6 +97,8 @@ public class MapperUtils {
 
     public List<AssetOperation> fromStringToListAssetOperation(String jsonStringify) {
         try {
+            objectMapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);
+
             return objectMapper.readValue(jsonStringify, new TypeReference<>(){});
         } catch (JsonProcessingException e) {
             log.error("failed to deserialize JSON String (Stringify) to List<AssetOperation> | {}",
